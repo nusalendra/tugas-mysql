@@ -52,5 +52,10 @@ ON ck.nomor_induk = k.nomor_induk
 WHERE keterangan LIKE "%anak%";
 
 10. tampilkan umur tiap2 karyawan, jika pesangon tiap tahun nya 3jt, data yang ditampilkan No, Nomor_induk, Nama, Alamat, tanggal_lahir, umur, pesangon  
-SELECT nomor_induk, nama, alamat, YEAR (CURDATE()) - YEAR (tanggal_lahir) as umur  
-FROM karyawan k;
+SELECT ck.nomor_induk, nama, alamat, YEAR (CURDATE()) - YEAR (tanggal_lahir) as umur, TIMESTAMPDIFF(YEAR, k.tanggal_masuk, 
+CURDATE())*3000000 as pesangon  
+FROM karyawan k
+LEFT JOIN cuti_karyawan ck 
+ON k.nomor_induk = ck.nomor_induk
+GROUP BY nomor_induk;
+
